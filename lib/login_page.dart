@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/signup_page.dart';
 
@@ -21,6 +23,19 @@ class _LoginPageState extends State<LoginPage> {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  void loginUserWithEmailAndPassword() async {
+    try {
+      final UserCredential = 
+       await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(), 
+        password: passwordController.text.trim(),
+        );
+        print(UserCredential);
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+    }
   }
 
   @override
