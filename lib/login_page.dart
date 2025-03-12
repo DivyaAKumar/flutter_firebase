@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void loginUserWithEmailAndPassword() async {
+Future<void> loginUserWithEmailAndPassword() async {
     try {
       final UserCredential = 
        await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -73,7 +73,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await loginUserWithEmailAndPassword();
+                },
                 child: const Text(
                   'SIGN IN',
                   style: TextStyle(

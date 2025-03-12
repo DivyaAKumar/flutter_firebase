@@ -61,9 +61,45 @@ class MyApp extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
+         if (snapshot.data != null ) {
+           return const MyHomePage();
+         }
           return const SignUpPage();
         }
       )
+
+      // StreamBuilder(
+      //   stream: FirebaseAuth.instance.idTokenChanges(), //when id token is refreshed (for secure services,update,sign in-sign out)
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState==ConnectionState.waiting) {
+      //       return const Center(
+      //         child: CircularProgressIndicator(),
+      //       );
+      //     }
+      //    if (snapshot.data != null ) {
+      //      return const MyHomePage();
+      //    }
+      //     return const SignUpPage();
+      //   }
+      // )
+
+      // StreamBuilder(
+      //   stream: FirebaseAuth.instance.userChanges(), //changes when 1) change in user properties-2)user sign in or sign out 3) change in email, passwords, name (id token change)
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState==ConnectionState.waiting) {
+      //       return const Center(
+      //         child: CircularProgressIndicator(),
+      //       );
+      //     }
+      //    if (snapshot.data != null ) {
+      //      return const MyHomePage();
+      //    }
+      //     return const SignUpPage();
+      //   }
+      // )
+
+
+      
     );
   }
 }

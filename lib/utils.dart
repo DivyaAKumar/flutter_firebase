@@ -11,7 +11,7 @@ Color strengthenColor(Color color, double factor) {
 }
 
 String rgbToHex(Color color) {
-  return '${color.red.toRadixString(16).padLeft(2, '0')}${color.green.toRadixString(16).padLeft(2, '0')}${color.blue.toRadixString(16).padLeft(2, '0')}';
+  return '${color.b}${color.g}${color.b}';
 }
 
 Color hexToColor(String hex) {
