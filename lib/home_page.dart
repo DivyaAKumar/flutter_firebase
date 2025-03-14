@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/add_new_task.dart';
@@ -15,6 +17,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore.instance.collection("tasks").doc().get();
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Tasks'),
@@ -38,49 +41,63 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             const DateSelector(),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return Row(
-                    children: [
-                      const Expanded(
-                        child: TaskCard(
-                          color: Color.fromRGBO(
-                            246,
-                            222,
-                            194,
-                            1,
-                          ),
-                          headerText: 'My humor upsets me XD',
-                          descriptionText: 'My humor not that great:(',
-                          scheduledDate: '69th August, 4020',
-                        ),
-                      ),
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: strengthenColor(
-                            const Color.fromRGBO(246, 222, 194, 1),
-                            0.69,
-                          ),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(12.0),
-                        child: Text(
-                          '10:00AM',
-                          style: TextStyle(
-                            fontSize: 17,
-                          ),
-                        ),
-                      )
-                    ],
+            FutureBuilder(
+              future: FirebaseFirestore.instance.collection("tasks").doc().get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                },
-              ),
+                }
+                if(!snapshot.hasData){
+                  return const Text("No data here")
+
+                }
+                return Expanded(
+                child: ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    return Row(
+                      children: [
+                        const Expanded(
+                          child: TaskCard(
+                            color: Color.fromRGBO(
+                              246,
+                              222,
+                              194,
+                              1,
+                            ),
+                            headerText: 'My humor upsets me XD',
+                            descriptionText: 'My humor not that great:(',
+                            scheduledDate: '69th August, 4020',
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: strengthenColor(
+                              const Color.fromRGBO(246, 222, 194, 1),
+                              0.69,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Text(
+                            '10:00AM',
+                            style: TextStyle(
+                              fontSize: 17,
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                ),
+              );
+              },
             ),
           ],
         ),

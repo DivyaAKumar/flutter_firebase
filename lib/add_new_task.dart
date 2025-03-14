@@ -33,10 +33,12 @@ Future<void> uploadTaskToDb() async{
     final data= await FirebaseFirestore.instance.collection("tasks").add({
       "title": titleController.text.trim(),
       "description": descriptionController.text.trim(),
-      "date": FieldValue.serverTimestamp(),//comes from cloud firestore package
+     //"date" : DateTime.now().toIso8601String(),
+      "date" : selectedDate,
+      "postedAt": FieldValue.serverTimestamp(),//comes from cloud firestore package-better way
       "color": rgbToHex(_selectedColor),
     });
-    print(data.id);
+    print(data.id); 
   } catch (e) {
     print(e);
     
@@ -140,7 +142,7 @@ Future<void> uploadTaskToDb() async{
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () async {
-                  await uploadTaskToDb;
+                  await uploadTaskToDb();
                 },
                 child: const Text(
                   'SUBMIT',
