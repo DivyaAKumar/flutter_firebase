@@ -59,37 +59,46 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ListView.builder(
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: TaskCard(
-                            color: Color(int.parse(snapshot.data!.docs[index].data()['color'].toString().replaceAll("#", ""), radix: 16)).withOpacity(1.0),
-                            headerText: snapshot.data!.docs[index].data()['title'],
-                            descriptionText: snapshot.data!.docs[index].data()['description'],
-                            scheduledDate: snapshot.data!.docs[index].data()['date'].toString(),
-                          ),
-                        ),
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: strengthenColor(
-                              const Color.fromRGBO(246, 222, 194, 1),
-                              0.69,
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Text(
-                            '10:00AM',
-                            style: TextStyle(
-                              fontSize: 17,
+                    return Dismissible(
+                      key: ValueKey(index),
+                       onDismissed: (direction) async{
+                         if (direction == DismissDirection.endToStart) {
+                          await FirebaseFirestore.instance.collection('tasks').doc(snapshot.data!.docs[index].id).delete(); //collection cant be deleted 
+                           //a drawer cant be removed, all the documents(items) inside it can be removed(deleted)
+                         }
+                       },
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TaskCard(
+                              color: Color(int.parse(snapshot.data!.docs[index].data()['color'].toString().replaceAll("#", ""), radix: 16)).withOpacity(1.0),
+                              headerText: snapshot.data!.docs[index].data()['title'],
+                              descriptionText: snapshot.data!.docs[index].data()['description'],
+                              scheduledDate: snapshot.data!.docs[index].data()['date'].toString(),
                             ),
                           ),
-                        )
-                      ],
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              color: strengthenColor(
+                                const Color.fromRGBO(246, 222, 194, 1),
+                                0.69,
+                              ),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: Text(
+                              '10:00AM',
+                              style: TextStyle(
+                                fontSize: 17,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     );
                   },
                 ),
