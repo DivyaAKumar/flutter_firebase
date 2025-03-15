@@ -35,6 +35,7 @@ Future<void> uploadTaskToDb() async{
       "description": descriptionController.text.trim(),
      //"date" : DateTime.now().toIso8601String(),
       "date" : selectedDate,
+      "creator" : FirebaseAuth.instance.currentUser!.uid,
       "postedAt": FieldValue.serverTimestamp(),//comes from cloud firestore package-better way
       "color": rgbToHex(_selectedColor),
     });

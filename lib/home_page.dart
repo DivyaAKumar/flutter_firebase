@@ -41,8 +41,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             const DateSelector(),
-            FutureBuilder(
-              future: FirebaseFirestore.instance.collection("tasks").doc().get(),
+            StreamBuilder(
+               stream: FirebaseFirestore.instance.collection("tasks").snapshots(),
+               // stream: FirebaseFirestore.instance.collection("tasks").where('creator', isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),---to get only particular task created by current user
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -50,26 +51,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 }
                 if(!snapshot.hasData){
-                  return const Text("No data here")
+                  return const Text("No data here");
 
                 }
+                //future(non real time(futurebuilder) ) to real time(stream)
                 return Expanded(
                 child: ListView.builder(
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     return Row(
                       children: [
-                        const Expanded(
+                        Expanded(
                           child: TaskCard(
-                            color: Color.fromRGBO(
-                              246,
-                              222,
-                              194,
-                              1,
-                            ),
-                            headerText: 'My humor upsets me XD',
-                            descriptionText: 'My humor not that great:(',
-                            scheduledDate: '69th August, 4020',
+                            color: Color(int.parse(snapshot.data!.docs[index].data()['color'].toString().replaceAll("#", ""), radix: 16)).withOpacity(1.0),
+                            headerText: snapshot.data!.docs[index].data()['title'],
+                            descriptionText: snapshot.data!.docs[index].data()['description'],
+                            scheduledDate: snapshot.data!.docs[index].data()['date'].toString(),
                           ),
                         ),
                         Container(
