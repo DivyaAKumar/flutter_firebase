@@ -63,7 +63,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       key: ValueKey(index),
                        onDismissed: (direction) async{
                          if (direction == DismissDirection.endToStart) {
-                          await FirebaseFirestore.instance.collection('tasks').doc(snapshot.data!.docs[index].id).delete(); //collection cant be deleted 
+                          await FirebaseFirestore.instance.collection('tasks').doc(snapshot.data!.docs[index].id).update(
+                            {
+                              'newfield' : 'hey',
+                              "color":"ffffff"
+                            }
+                          ); //collection cant be deleted 
                            //a drawer cant be removed, all the documents(items) inside it can be removed(deleted)
                          }
                        },
