@@ -31,7 +31,7 @@ class _AddNewTaskState extends State<AddNewTask> {
 
 Future<void> uploadTaskToDb() async{
   try {
-    //create own id and add as document
+   //firestore db is not good with image sharing - as limit of size of each doc is 1 mb only 
     final id = Uuid().v4();
     await FirebaseFirestore.instance.collection("tasks").doc(id).set({
       "title": titleController.text.trim(),
