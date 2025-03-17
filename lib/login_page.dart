@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/signup_page.dart';
 
+
 class LoginPage extends StatefulWidget {
   static route() => MaterialPageRoute(
         builder: (context) => const LoginPage(),
